@@ -20,4 +20,9 @@ $ g++ main.cpp graph.cpp -o output
 $ ./output
 ```
 ## PREVIEW 
+  *  Visual of sample graph.
+  *  ![Sample Graph inserted in main.cpp](samplegraphvisual.png)
+  *  Output of printGraph().
+  *  ![output of main.cpp](outputex.png)
+
 
