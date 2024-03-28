@@ -21,8 +21,8 @@ $ ./output
 ```
 ## PREVIEW 
   *  Visual of sample graph.
-  *  ![Sample Graph inserted in main.cpp](samplegraphvisual.png)
+  *  ![Sample Graph inserted in main.cpp](sample/samplegraphvisual.png)
   *  Output of printGraph().
-  *  ![output of main.cpp](outputex.png)
+  *  ![output of main.cpp](sample/outputex.png)
 
 
