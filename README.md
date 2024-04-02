@@ -1,5 +1,5 @@
 # Graph CPP
-An attempt to represent graphs in cpp. Currently the graph is using an adjacency list managed by an unordered map in order to support vertices with char type names.
+An attempt to represent graphs in cpp. The graph is using an adjacency list managed by an unordered map in order to support vertices with char type names. However the verticies and edges can be extracted from your graph in various formats. The adjancey list hashmap. The adjancey list integer version. The adjancey matrix. The weights matrix.
 ## Usage
 * In main.cpp a sample graph is added and it is printed.
 * All forms of the graphs representation is also printed.
@@ -21,32 +21,40 @@ An attempt to represent graphs in cpp. Currently the graph is using an adjacency
   ```
 * If you want a undirected graph, add edges both ways
   ```
-  addEdge(src, dest, cost);
-  addEdge(dest, src, cost);
+  g.addEdge(src, dest, cost);
+  g.addEdge(dest, src, cost);
   ```
 * The graphs data can be extracted in multiple formats
 * Getting AdjList 
   ```
-  std::vector<std::vector<std::vector<int>>> adj = getAdjInt();
+  std::vector<std::vector<std::vector<int>>> adj = g.getAdjInt();
   adj[i][j]    <- jth edge of vertex i
   adj[i][j][0] <- vertex i's jth edge's destination vertex
   adj[i][j][1] <- vertex i's jth edge's cost
   ```
 * Getting AdjMatrix
   ```
-  std::vector<std::vector<bool>> adjMatrix = getAdjMatrix();
+  std::vector<std::vector<bool>> adjMatrix = g.getAdjMatrix();
   adjMatrix[i][j] <- true or false value indicating edge from i to j
   ```
 * Getting Weights Matrix
   ```
-  std::vector<std::vector<int>> W = getWeights();
+  std::vector<std::vector<int>> W = g.getWeights();
   W[i][j] <- cost from vertex i to j if it exist, INT_MAX else case
   ```
 * You can always convert from integer index to name of vertex and back
   ```
-  addVertex('S');
-  int vertex_id = charVtoNumV('S');          <- vertex_id is integer id of vertex 'S'
-  char vertex_name = numVtoCharV(vertex_id); <- vertex_name = 'S'
+  g.addVertex('S');
+  int vertex_id = g.charVtoNumV('S');          <- vertex_id is integer id of vertex 'S'
+  char vertex_name = g.numVtoCharV(vertex_id); <- vertex_name = 'S'
+  ```
+* Adjacent verticies of a vertex can also be extracted
+  ```
+  g.addVertex('S');
+  // Graph::Edge consists of a edge type where edge.dest = char id of destination, edge.weight = cost of edge
+  vector<Graph::Edge> adjEdges = g.getAdjEdges('S');   <- Character version of adj edges
+  // vector<int> edge (aka inner vector) holds two values. edge[0] = int id of destination, edge[1] = cost of edge
+  vector<vector<int>> adjEdges = g.getAdjEdgesInts(0); <- Integer version of adj edges
   ```
 * The goal is to be able to add in your graphs and you can implement your favorite graph algorithms!
 
