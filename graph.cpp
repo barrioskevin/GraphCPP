@@ -8,6 +8,20 @@ void Graph::addVertex(char v)
 	if(adj.find(v) == adj.end())
 	{
 		adj[v] = std::vector<Graph::Edge>();
+		numVert++;
+		adjInts.push_back(std::vector<std::vector<int>>());
+		vToIdx[v] = numVert-1;
+		idxToName.push_back(v);
+		for(int i = 0; i < adjMatrix.size(); i++)
+		{
+			for(int j = adjMatrix[i].size(); j < numVert; j++)
+			{
+				adjMatrix[i].push_back(0);
+				weights[i].push_back(INT_MAX);
+			}
+		}
+		adjMatrix.push_back(std::vector<bool>(numVert));
+		weights.push_back(std::vector<int>(numVert,INT_MAX));
 	}
 	else
 	{
@@ -16,14 +30,25 @@ void Graph::addVertex(char v)
 }
 void Graph::addEdge(char src, char dest, int weight)
 {
+	int idx = this->vToIdx[src];
+	int destIdx = this->vToIdx[dest];
 	if(adj.find(src) == adj.end() || adj.find(dest) == adj.end())
 		std::cout << "Missing src vertex or dest vertex!\n";
+	else if(adjMatrix[idx][destIdx] == 1)
+		std::cout << "EDGE ALREADY EXISTS!\n";
+	else if(adjMatrix[destIdx][idx] == 1 && weight != weights[destIdx][idx])
+		std::cout << "ILLEGAL EDGE TO ADD!\n";
 	else
 	{
 		Graph::Edge e;
 		e.dest = dest;
 		e.weight = weight;
 		adj[src].push_back(e);
+		numEdges++;
+		std::vector<int> edge = {destIdx,weight};
+		adjInts[idx].push_back(edge);
+		adjMatrix[idx][destIdx] = 1;
+		weights[idx][destIdx] = weight;
 	}
 }
 void Graph::printGraph()
@@ -51,4 +76,35 @@ std::vector<Graph::Edge> Graph::getAdjEdges(char src)
 		for(const Graph::Edge& e : adj[src])
 		    adjEdges.push_back(e);
 	return adjEdges;
+}
+std::vector<std::vector<int>> Graph::getAdjEdgesInts(int src)
+{
+	std::vector<std::vector<int>> adjEdges;
+	if(src < numVert)
+	{
+		for(int i = 0; i < adjInts[src].size(); i++)
+		{
+			std::vector<int> e = {adjInts[src][i][0],adjInts[src][i][1]};
+			adjEdges.push_back(e);
+		}
+	}	
+	return adjEdges;
+}
+char Graph::numVtoCharV(int v)
+{
+	if(v >= numVert)
+	{
+		std::cout << "NO SUCH VERTEX, RETURNING '!'";
+		return '!';
+	}
+	return idxToName[v];
+}
+int Graph::charVtoNumV(char v)
+{
+	if(adj.find(v) == adj.end())
+	{
+		std::cout << "NO SUCH VERTEX, RETURNING -1";
+		return -1;
+	}	
+	return vToIdx[v];
 }
