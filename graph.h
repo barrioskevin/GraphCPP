@@ -36,6 +36,8 @@ struct Edge{
 	char numVtoCharV(int v);
 	//function to convert a graphs name to a graphs idx
 	int charVtoNumV(char v);
+	//function to update weight of an edge present in graph
+ 	void changeEdgeWeight(char src, char dest, int w);	
     	//Getter function to retrieve the graphs adjacency list
 	//it is a map of characters to list of edges
 	std::unordered_map<char,std::vector<Edge>> getAdj(){return adj;}
@@ -54,6 +56,8 @@ struct Edge{
 	//matrix[i][j] will be the weight of edge i to j if it exists
 	//infinity else case.
 	std::vector<std::vector<int>> getWeights() {return weights;}
+	int getNumVert() {return numVert;}
+	int getNumEdges() {return numEdges;}
 private:
 	//this->adj represents the map of verticies to 
 	//it's list of edges.

@@ -108,3 +108,36 @@ int Graph::charVtoNumV(char v)
 	}	
 	return vToIdx[v];
 }
+//Graph::Edge e;
+//e.dest = dest;
+//e.weight = weight;
+//adj[src].push_back(e);
+//numEdges++;
+//std::vector<int> edge = {destIdx,weight};
+//adjInts[idx].push_back(edge);
+//adjMatrix[idx][destIdx] = 1;
+//weights[idx][destIdx] = weight;
+//
+void Graph::changeEdgeWeight(char src, char dest, int w)
+{
+	int s_id = charVtoNumV(src);
+	int d_id = charVtoNumV(dest);
+	if(s_id == -1 || d_id == -1) return;
+	if(weights[s_id][d_id] == INT_MAX) return;
+	std::vector<int> edge = {d_id,w};
+	Graph::Edge e;
+	e.dest = dest;
+	e.weight = w;
+	for(int i = 0; i < adj[src].size(); i++)
+	{
+		if(adj[src][i].dest == dest)
+			adj[src][i].weight = w;
+	}
+	int j;
+	for(int i = 0; i < adjInts[s_id].size(); i++)
+		if(adjInts[s_id][i][0] == d_id)
+			j = i;
+	adjInts[s_id][j] = edge;
+	weights[s_id][d_id] = w;
+
+}
