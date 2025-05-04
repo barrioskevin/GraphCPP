@@ -28,29 +28,44 @@ void Graph::addVertex(char v)
 		std::cout << "Vertex " << v << " already exists!\n";
 	}
 }
+
+//useful for unweighted graphs.
+void Graph::addEdge(char src, char dest)
+{
+    this->addEdge(src, dest, 1);
+}
+
 void Graph::addEdge(char src, char dest, int weight)
 {
+    if(adj.find(src) == adj.end())
+        this->addVertex(src);
+    if(adj.find(dest) == adj.end())
+        this->addVertex(dest);
+
 	int idx = this->vToIdx[src];
 	int destIdx = this->vToIdx[dest];
-	if(adj.find(src) == adj.end() || adj.find(dest) == adj.end())
-		std::cout << "Missing src vertex or dest vertex!\n";
-	else if(adjMatrix[idx][destIdx] == 1)
-		std::cout << "EDGE ALREADY EXISTS!\n";
-	else if(adjMatrix[destIdx][idx] == 1 && weight != weights[destIdx][idx])
+    if(adjMatrix[destIdx][idx] == 1 && weight != weights[destIdx][idx])
+    {
 		std::cout << "ILLEGAL EDGE TO ADD!\n";
-	else
-	{
-		Graph::Edge e;
-		e.dest = dest;
-		e.weight = weight;
-		adj[src].push_back(e);
-		numEdges++;
-		std::vector<int> edge = {destIdx,weight};
-		adjInts[idx].push_back(edge);
-		adjMatrix[idx][destIdx] = 1;
-		weights[idx][destIdx] = weight;
-	}
+        return;
+    }
+	if(adjMatrix[idx][destIdx] == 1)
+    {
+		std::cout << "EDGE ALREADY EXISTS!\n";
+        return;
+    }
+
+    Graph::Edge e;
+    e.dest = dest;
+    e.weight = weight;
+    adj[src].push_back(e);
+    numEdges++;
+    std::vector<int> edge = {destIdx,weight};
+    adjInts[idx].push_back(edge);
+    adjMatrix[idx][destIdx] = 1;
+    weights[idx][destIdx] = weight;
 }
+
 void Graph::printGraph()
 {
 	for (const auto& k : adj)
